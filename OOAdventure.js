@@ -1,36 +1,10 @@
-// >>>>>>>>>>>>>>>>>>>>Part 1: Humble Beginnings <<<<<<<<<<<<<<<<<<<<<<
-// const adventurer = {
-//     name: "Robin",
-//     health: 10,
-//     inventory: ["sword", "potion", "artifact"],
-//     companion: {
-//         name: "Leo",
-//         type: "Cat",
-//         companion: {
-//             name: "Frank",
-//             type: "Flea",
-//             belongings: ["small hat", "sunglasses"]
-//         }
-//     },
-//     roll (mod = 0) {
-//         const result = Math.floor(Math.random() * 20) + 1 + mod;
-//         console.log(`${this.name} rolled a ${result}.`)
-
-//     }
-// }
-
-// adventurer.inventory.forEach((item) => console.log(item));
-
-// adventurer.roll()
-// adventurer.roll()
-// adventurer.roll()
-// adventurer.roll()
-
-//>>>>>>>>>>>>>>>>>>>>>>>>>>Part 2: Class Fantasy <<<<<<<<<<<<<<<<<<<<<<<
+// Create `Character class` with a static property MAX_HEALTH
 class Character {
+    static MAX_HEALTH = 100;
+
     constructor (name) {
       this.name = name;
-      this.health = 100;
+      this.health = Character.MAX_HEALTH;
       this.inventory = [];
     }
 
@@ -41,20 +15,9 @@ class Character {
     }
   }
 
-//   const robin = new Character("Robin");
-//   robin.inventory = ["sword", "potion", "artifact"];
-//   robin.companion = new Character("Leo");
-//   robin.companion.type = "Cat";
-//   robin.companion.companion = new Character("Frank")
-//   robin.companion.companion.type = "Flea"
-//   robin.companion.companion.inventory = ["small hat", "sunglasses"];
-
-//   robin.companion.roll();
-//   robin.companion.companion.roll();
-
-  //>>>>>>>>>>>>>>>>>>>>>Part 3: Class features <<<<<<<<<<<<<<<<<<<<<
-
+// Create `Adventurer` class
 class Adventurer extends Character {
+    
     constructor(name, health, inventory, role, strength, companion) {
         super(name, health, inventory);
         // Add property role to the adventurer
@@ -79,6 +42,7 @@ class Adventurer extends Character {
     }
 }
 
+//Create `companion` class
 class Companion extends Character {
     constructor(name, inventory, type, companion = null){
         super(name, inventory)
@@ -93,12 +57,18 @@ class Companion extends Character {
     }
 
 }
+
+// Create instance of Companion, this companion doesn't have any companion so we don't pass it into the arguments
 const frank = new Companion("Frank", ["small hat", "sunglasses"], "flea");
 console.log(frank);
+// Create an instance of Companion with `frank` as its companion
 const leo = new Companion("Leo", ["Healing kit", "boots", "sword", "hat"], "cat", frank);
 console.log(leo);
-const robin = new Adventurer("Robin", 100, ["sword", "potion", "artifact"],"Warrior", 80, leo);
-console.log(robin);
+// Create a instance of Adventurer with `leo` as a companion. Health is passed as undefined argument because its set to 100 by default in the Character constructor
+const robin = new Adventurer("Robin", undefined, ["sword", "potion", "artifact"],"Warrior", 80, leo);
+// Call the roll method on each
 robin.roll()
 robin.companion.roll();
 robin.companion.companion.roll();
+
+
