@@ -16,7 +16,7 @@ class Character {
     }
   }
 
-// Create `Adventurer` class
+// Create `Adventurer` class with static property of ROLES
 class Adventurer extends Character {
     static ROLES = ["Fighter", "Healer", "Wizard"];
 
@@ -33,7 +33,7 @@ class Adventurer extends Character {
         this.inventory.push("bedroll", "50 gold coins");
         // What other properties should they have?
         strength = Number(strength);
-        if(strength > 1 && strength < 100){
+        if(strength > 1 && strength < 50){
         this.strength = strength;
         }
         this.companion = companion;
@@ -49,13 +49,15 @@ class Adventurer extends Character {
     }
     duel(opponent) {
         let roundCounter = 0;
+        // Roll and substract 1 to the adventurer's health if rolled a number lower than the opponent. 
+        //Keep rolling till one of the two adventurers reaches 50 health stop the duel 
         while(true){
             if(this.health <= 50 || opponent.health <= 50){
                 if(this.health > opponent.health){
-                    console.log(`${this.name} won the duel!`)
+                    console.log(`${this.name} won the duel!\n`)
                 }
                 else{
-                    console.log(`${opponent.name} won the duel!`)
+                    console.log(`${opponent.name} won the duel!\n`)
                 }
             break;
             }
@@ -83,10 +85,10 @@ class Companion extends Character {
         this.companion = companion;
     }
     heal(){
-        console.log("heal");
+        console.log("Heal");
     }
     follow(){
-        console.log("follow");
+        console.log("Follow");
     }
 
 }
@@ -106,3 +108,56 @@ const feather = new Companion("Feather", ["Healing kit", "boots", "claws", "sung
 const charles = new Adventurer("Charles", undefined, ["cane", "pouch", "dagger"], "Wizard", 75, feather);
 
 robin.duel(charles);
+
+// Create classes for each role of adventurer and add unique methods to each one
+// Fighter 
+class Fighter extends Adventurer {
+    constructor(name, strength, companion) {
+        super(name, undefined, ["sword", "armor"], "Fighter", strength, companion);
+    }
+    attack(target) {
+        console.log(`${this.name} attacks ${target.name} with their sword!`);
+        target.health -= this.strength;
+        console.log(`${target.name}'s health is now ${target.health}.`);
+    }
+}
+
+// Healer
+class Healer extends Adventurer {
+    constructor(name, strength, companion, healingPower) {
+        super(name, undefined, ["healing herbs", "robe"], "Healer", strength, companion);
+        this.healingPower = Number(healingPower);
+    }
+
+    heal(target) {
+        console.log(`${this.name} heals ${target.name} with their healing herbs!`);
+        target.health += this.healingPower;
+        console.log(`${target.name}'s health is now ${target.health}.`);
+    }
+}
+
+// Wizard
+class Wizard extends Adventurer {
+    constructor(name, strength, companion, spell) {
+        super(name, undefined, ["spellbook", "robe"], "Wizard", strength, companion);
+        this.spell = spell;
+    }
+
+    castSpell(target) {
+        console.log(`${this.name} casts ${this.spell} on ${target.name}!`);
+        target.health -= Math.random() * this.strength + 1;
+        console.log(`${target.name}'s health is now ${target.health}.`);
+    }
+}
+
+// Test new role adventurers
+
+const fighter = new Fighter("Aragorn", 40, leo);
+const healer = new Healer("Elrond", 30, frank, 25);
+const wizard = new Wizard("Gandalf", 35, leo, "Fireball");
+
+const targetAdventurer = new Adventurer("Orc", undefined, [], "Fighter", 70, null);
+
+fighter.attack(targetAdventurer);
+healer.heal(targetAdventurer);
+wizard.castSpell(targetAdventurer);
